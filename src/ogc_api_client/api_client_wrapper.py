@@ -1,3 +1,4 @@
+import json
 from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
@@ -26,6 +27,8 @@ from ogc_api_client.api.process_list_api import ProcessListApi
 from ogc_api_client.api.result_api import ResultApi
 from ogc_api_client.api.status_api import StatusApi
 
+from pystac import ItemCollection
+
 class ApiClientWrapper:
 
     def __init__(self,
@@ -48,7 +51,7 @@ class ApiClientWrapper:
         self.status_api = None
 
     # Capabilities API
-    
+
     def get_landing_page(
         self,
         _request_timeout: Union[
@@ -79,7 +82,7 @@ class ApiClientWrapper:
             _headers=_headers,
             _host_index=_host_index
         )
-    
+
     # Conformance declaration API
 
     def get_conformance_classes(
@@ -112,7 +115,7 @@ class ApiClientWrapper:
             _headers=_headers,
             _host_index=_host_index
         )
-        
+
     # Dismiss API
 
     def dismiss(
@@ -184,7 +187,7 @@ class ApiClientWrapper:
             _headers=_headers,
             _host_index=_host_index
         )
-    
+
     def execute_simple(
         self,
         process_id: StrictStr,
@@ -315,7 +318,7 @@ class ApiClientWrapper:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ProcessList:
-        
+
         if not self.process_list_api:
             self.process_list_api = ProcessListApi(api_client=self.api_client)
 
@@ -362,6 +365,54 @@ class ApiClientWrapper:
             _host_index=_host_index
         )
 
+    def get_result_simple(
+        self,
+        job_id: Annotated[StrictStr, Field(description="local identifier of a job")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> Dict[str, InlineOrRefData]:
+        if not self.result_api:
+            self.result_api = ResultApi(api_client=self.api_client)
+
+        _param = self.result_api._get_result_serialize(
+            job_id=job_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "Dict[str, InlineOrRefData]",
+            '404': "Exception",
+            '500': "Exception",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+
+        try:
+            return self.api_client.response_deserialize(
+                response_data=response_data,
+                response_types_map=_response_types_map,
+            ).data
+        except Exception:
+            response_text = response_data.data.decode('utf-8')
+            response_dict = json.loads(response_text)
+            response_obj = ((next(v for v in response_dict.values())))
+            return ItemCollection.from_dict((next(v for v in response_dict.values())))
 
     # Status API
 
