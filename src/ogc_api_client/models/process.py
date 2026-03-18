@@ -41,7 +41,7 @@ class Process(BaseModel):
     additional_parameters: Optional[DescriptionTypeAdditionalParameters] = Field(default=None, alias="additionalParameters")
     id: StrictStr
     version: StrictStr
-    mutable: bool = True
+    mutable: Optional[bool] = True
     job_control_options: Optional[List[JobControlOptions]] = Field(default=None, alias="jobControlOptions")
     output_transmission: Optional[List[TransmissionMode]] = Field(default=None, alias="outputTransmission")
     links: Optional[List[Link]] = None

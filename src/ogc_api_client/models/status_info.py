@@ -47,7 +47,7 @@ class StatusInfo(BaseModel):
     @field_validator('type')
     def type_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['process']):
+        if value not in set(['process', 'job']):
             raise ValueError("must be one of enum values ('process')")
         return value
 
