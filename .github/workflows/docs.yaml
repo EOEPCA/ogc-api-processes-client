@@ -1,0 +1,31 @@
+name: docs
+on:
+  push:
+    branches:
+      - docs
+      - develop
+      - main
+    paths:
+      # Only rebuild website when docs have changed
+      - 'README.md'
+      - 'docs/**'
+      - 'mkdocs.yml'
+      - .github/**
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+      - run: pip install mkdocs-material mkdocs-mermaid2-plugin mkdocs-jupyter legacy-cgi pdocs
+      - run: |
+          cd src
+          pip install .
+          pdocs as_markdown --output_dir ../docs/api/latest --exclude_source --overwrite ogc_api_client
+      - run: mkdocs gh-deploy --force
