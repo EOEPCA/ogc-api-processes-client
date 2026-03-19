@@ -1,4 +1,3 @@
-*.jar
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -65,3 +64,8 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+uv.lock
+site
+.ruff-cache
+.hatch-data

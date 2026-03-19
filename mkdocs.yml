@@ -1,8 +1,8 @@
 site_name: OGC API Processes Client
-site_url: https://eoepca.github.io/ogc-api-client/
+site_url: https://eoepca.github.io/ogc-api-processes-client/
 site_author: Fabrice Brito
-repo_url: https://github.com/EOEPCA/ogc-api-client/
-repo_name: EOEPCA/ogc-api-client
+repo_url: https://github.com/EOEPCA/ogc-api-processes-client/
+repo_name: EOEPCA/ogc-api-processes-client
 
 theme:
     logo: imgs/icon-eoap.png
@@ -59,64 +59,66 @@ extra_javascript:
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
 nav:
+  - Developer Onboarding: developer-onboarding.md
   - Installation: installation.md
   - Usage: usage.md
   - API doc: 
-    - api/latest/ogc_api_client/index.md
-    - api/latest/ogc_api_client/api_client.md
-    - api/latest/ogc_api_client/api_response.md
-    - api/latest/ogc_api_client/configuration.md
-    - api/latest/ogc_api_client/exceptions.md
-    - api/latest/ogc_api_client/rest.md
+    - api/latest/ogc_api_processes_client/index.md
+    - api/latest/ogc_api_processes_client/api_client.md
+    - api/latest/ogc_api_processes_client/api_client_wrapper.md
+    - api/latest/ogc_api_processes_client/api_response.md
+    - api/latest/ogc_api_processes_client/configuration.md
+    - api/latest/ogc_api_processes_client/exceptions.md
+    - api/latest/ogc_api_processes_client/rest.md
     - api:
-      - api/latest/ogc_api_client/api/index.md
-      - api/latest/ogc_api_client/api/capabilities_api.md
-      - api/latest/ogc_api_client/api/conformance_declaration_api.md
-      - api/latest/ogc_api_client/api/dismiss_api.md
-      - api/latest/ogc_api_client/api/execute_api.md
-      - api/latest/ogc_api_client/api/job_list_api.md
-      - api/latest/ogc_api_client/api/process_description_api.md
-      - api/latest/ogc_api_client/api/process_list_api.md
-      - api/latest/ogc_api_client/api/result_api.md
-      - api/latest/ogc_api_client/api/status_api.md
+      - api/latest/ogc_api_processes_client/api/index.md
+      - api/latest/ogc_api_processes_client/api/capabilities_api.md
+      - api/latest/ogc_api_processes_client/api/conformance_declaration_api.md
+      - api/latest/ogc_api_processes_client/api/dismiss_api.md
+      - api/latest/ogc_api_processes_client/api/execute_api.md
+      - api/latest/ogc_api_processes_client/api/job_list_api.md
+      - api/latest/ogc_api_processes_client/api/process_description_api.md
+      - api/latest/ogc_api_processes_client/api/process_list_api.md
+      - api/latest/ogc_api_processes_client/api/result_api.md
+      - api/latest/ogc_api_processes_client/api/status_api.md
     - models:
-      - api/latest/ogc_api_client/models/index.md
-      - api/latest/ogc_api_client/models/additional_parameter.md
-      - api/latest/ogc_api_client/models/additional_parameter_value_inner.md
-      - api/latest/ogc_api_client/models/bbox.md
-      - api/latest/ogc_api_client/models/conf_classes.md
-      - api/latest/ogc_api_client/models/description_type_additional_parameters.md
-      - api/latest/ogc_api_client/models/description_type.md
-      - api/latest/ogc_api_client/models/exception.md
-      - api/latest/ogc_api_client/models/execute200_response.md
-      - api/latest/ogc_api_client/models/execute_inputs_value.md
-      - api/latest/ogc_api_client/models/execute.md
-      - api/latest/ogc_api_client/models/format.md
-      - api/latest/ogc_api_client/models/format_schema.md
-      - api/latest/ogc_api_client/models/index.md
-      - api/latest/ogc_api_client/models/inline_or_ref_data.md
-      - api/latest/ogc_api_client/models/input_description_all_of_max_occurs.md
-      - api/latest/ogc_api_client/models/input_description.md
-      - api/latest/ogc_api_client/models/input_value.md
-      - api/latest/ogc_api_client/models/input_value_no_object.md
-      - api/latest/ogc_api_client/models/job_control_options.md
-      - api/latest/ogc_api_client/models/job_list.md
-      - api/latest/ogc_api_client/models/landing_page.md
-      - api/latest/ogc_api_client/models/link.md
-      - api/latest/ogc_api_client/models/metadata.md
-      - api/latest/ogc_api_client/models/model_schema.md
-      - api/latest/ogc_api_client/models/output_description.md
-      - api/latest/ogc_api_client/models/output.md
-      - api/latest/ogc_api_client/models/process_list.md
-      - api/latest/ogc_api_client/models/process.md
-      - api/latest/ogc_api_client/models/process_summary.md
-      - api/latest/ogc_api_client/models/qualified_input_value.md
-      - api/latest/ogc_api_client/models/reference.md
-      - api/latest/ogc_api_client/models/schema_one_of_additional_properties.md
-      - api/latest/ogc_api_client/models/schema_one_of.md
-      - api/latest/ogc_api_client/models/schema_one_of_not.md
-      - api/latest/ogc_api_client/models/status_code.md
-      - api/latest/ogc_api_client/models/status_info.md
-      - api/latest/ogc_api_client/models/subscriber.md
-      - api/latest/ogc_api_client/models/transmission_mode.md
+      - api/latest/ogc_api_processes_client/models/index.md
+      - api/latest/ogc_api_processes_client/models/additional_parameter.md
+      - api/latest/ogc_api_processes_client/models/additional_parameter_value_inner.md
+      - api/latest/ogc_api_processes_client/models/bbox.md
+      - api/latest/ogc_api_processes_client/models/conf_classes.md
+      - api/latest/ogc_api_processes_client/models/description_type_additional_parameters.md
+      - api/latest/ogc_api_processes_client/models/description_type.md
+      - api/latest/ogc_api_processes_client/models/exception.md
+      - api/latest/ogc_api_processes_client/models/execute200_response.md
+      - api/latest/ogc_api_processes_client/models/execute_inputs_value.md
+      - api/latest/ogc_api_processes_client/models/execute.md
+      - api/latest/ogc_api_processes_client/models/format.md
+      - api/latest/ogc_api_processes_client/models/format_schema.md
+      - api/latest/ogc_api_processes_client/models/index.md
+      - api/latest/ogc_api_processes_client/models/inline_or_ref_data.md
+      - api/latest/ogc_api_processes_client/models/input_description_all_of_max_occurs.md
+      - api/latest/ogc_api_processes_client/models/input_description.md
+      - api/latest/ogc_api_processes_client/models/input_value.md
+      - api/latest/ogc_api_processes_client/models/input_value_no_object.md
+      - api/latest/ogc_api_processes_client/models/job_control_options.md
+      - api/latest/ogc_api_processes_client/models/job_list.md
+      - api/latest/ogc_api_processes_client/models/landing_page.md
+      - api/latest/ogc_api_processes_client/models/link.md
+      - api/latest/ogc_api_processes_client/models/metadata.md
+      - api/latest/ogc_api_processes_client/models/model_schema.md
+      - api/latest/ogc_api_processes_client/models/output_description.md
+      - api/latest/ogc_api_processes_client/models/output.md
+      - api/latest/ogc_api_processes_client/models/process_list.md
+      - api/latest/ogc_api_processes_client/models/process.md
+      - api/latest/ogc_api_processes_client/models/process_summary.md
+      - api/latest/ogc_api_processes_client/models/qualified_input_value.md
+      - api/latest/ogc_api_processes_client/models/reference.md
+      - api/latest/ogc_api_processes_client/models/schema_one_of_additional_properties.md
+      - api/latest/ogc_api_processes_client/models/schema_one_of.md
+      - api/latest/ogc_api_processes_client/models/schema_one_of_not.md
+      - api/latest/ogc_api_processes_client/models/status_code.md
+      - api/latest/ogc_api_processes_client/models/status_info.md
+      - api/latest/ogc_api_processes_client/models/subscriber.md
+      - api/latest/ogc_api_processes_client/models/transmission_mode.md
 copyright: <a href="https://img.shields.io/badge/License-CC_BY--SA_4.0-lightgrey.svg">License CC BY-SA 4.0</a>, by <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons</a>
