@@ -21,6 +21,7 @@ on:
     - feature/**
     - develop
     - main
+    - refactoring
     tags:
     - v*.*.*
   pull_request:
