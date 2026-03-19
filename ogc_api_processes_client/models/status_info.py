@@ -60,8 +60,8 @@ class StatusInfo(BaseModel):
     @field_validator("type")
     def type_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(["process"]):
-            raise ValueError("must be one of enum values ('process')")
+        if value not in set(["process", "job"]):
+            raise ValueError("must be one of enum values ('process', 'job')")
         return value
 
     model_config = ConfigDict(
