@@ -40,7 +40,9 @@ class DummyResponse:
 class TestApiClient(unittest.TestCase):
     def _client(self):
         cfg = Configuration(host="https://example.test")
-        return ApiClient(configuration=cfg, header_name="X-A", header_value="B", cookie="c=v")
+        return ApiClient(
+            configuration=cfg, header_name="X-A", header_value="B", cookie="c=v"
+        )
 
     def test_sanitize_for_serialization_supports_common_types(self):
         client = self._client()
@@ -107,10 +109,16 @@ class TestApiClient(unittest.TestCase):
 
     def test_select_headers(self):
         client = self._client()
-        self.assertEqual(client.select_header_accept(["text/plain", "application/json"]), "application/json")
+        self.assertEqual(
+            client.select_header_accept(["text/plain", "application/json"]),
+            "application/json",
+        )
         self.assertEqual(client.select_header_accept(["text/plain"]), "text/plain")
         self.assertIsNone(client.select_header_accept([]))
-        self.assertEqual(client.select_header_content_type(["text/plain", "application/json"]), "application/json")
+        self.assertEqual(
+            client.select_header_content_type(["text/plain", "application/json"]),
+            "application/json",
+        )
         self.assertIsNone(client.select_header_content_type([]))
 
     def test_update_params_for_auth_and_apply_auth_params(self):
@@ -140,14 +148,42 @@ class TestApiClient(unittest.TestCase):
         )
         self.assertIn(("k", "v"), queries)
 
-        client._apply_auth_params(headers, queries, "/x", "GET", None, {"in": "header", "type": "api_key", "key": "X-K", "value": "V"})
+        client._apply_auth_params(
+            headers,
+            queries,
+            "/x",
+            "GET",
+            None,
+            {"in": "header", "type": "api_key", "key": "X-K", "value": "V"},
+        )
         self.assertEqual(headers["X-K"], "V")
-        client._apply_auth_params(headers, queries, "/x", "GET", None, {"in": "cookie", "type": "api_key", "key": "Cookie", "value": "a=b"})
+        client._apply_auth_params(
+            headers,
+            queries,
+            "/x",
+            "GET",
+            None,
+            {"in": "cookie", "type": "api_key", "key": "Cookie", "value": "a=b"},
+        )
         self.assertEqual(headers["Cookie"], "a=b")
-        client._apply_auth_params(headers, queries, "/x", "GET", None, {"in": "header", "type": "http-signature", "key": "Sig", "value": "skip"})
+        client._apply_auth_params(
+            headers,
+            queries,
+            "/x",
+            "GET",
+            None,
+            {"in": "header", "type": "http-signature", "key": "Sig", "value": "skip"},
+        )
         self.assertNotIn("Sig", headers)
         with self.assertRaises(ApiValueError):
-            client._apply_auth_params(headers, queries, "/x", "GET", None, {"in": "body", "type": "api_key", "key": "k", "value": "v"})
+            client._apply_auth_params(
+                headers,
+                queries,
+                "/x",
+                "GET",
+                None,
+                {"in": "body", "type": "api_key", "key": "k", "value": "v"},
+            )
 
     def test_param_serialize_builds_url_and_headers(self):
         client = self._client()
@@ -161,7 +197,12 @@ class TestApiClient(unittest.TestCase):
             auth_settings=["dummy"],
             collection_formats={},
             _host="https://override.test",
-            _request_auth={"in": "header", "type": "api_key", "key": "X-Auth", "value": "token"},
+            _request_auth={
+                "in": "header",
+                "type": "api_key",
+                "key": "X-Auth",
+                "value": "token",
+            },
         )
         self.assertEqual(method, "POST")
         self.assertTrue(url.startswith("https://override.test/r/a%2Fb?q=hello%20world"))
@@ -189,13 +230,22 @@ class TestApiClient(unittest.TestCase):
             client.deserialize("x", "str", "application/xml")
 
         self.assertEqual(client._ApiClient__deserialize([1, 2], "List[int]"), [1, 2])
-        self.assertEqual(client._ApiClient__deserialize({"a": 1}, "Dict[str, int]"), {"a": 1})
-        self.assertEqual(client._ApiClient__deserialize("successful", StatusCode), StatusCode.SUCCESSFUL)
+        self.assertEqual(
+            client._ApiClient__deserialize({"a": 1}, "Dict[str, int]"), {"a": 1}
+        )
+        self.assertEqual(
+            client._ApiClient__deserialize("successful", StatusCode),
+            StatusCode.SUCCESSFUL,
+        )
         with self.assertRaises(ApiException):
             client._ApiClient__deserialize_enum("nope", StatusCode)
 
-        self.assertEqual(client._ApiClient__deserialize_date("2024-01-01"), datetime.date(2024, 1, 1))
-        self.assertEqual(client._ApiClient__deserialize_datetime("2024-01-01T00:00:00Z").year, 2024)
+        self.assertEqual(
+            client._ApiClient__deserialize_date("2024-01-01"), datetime.date(2024, 1, 1)
+        )
+        self.assertEqual(
+            client._ApiClient__deserialize_datetime("2024-01-01T00:00:00Z").year, 2024
+        )
         with self.assertRaises(ApiException):
             client._ApiClient__deserialize_date("not-a-date")
         with self.assertRaises(ApiException):
@@ -210,13 +260,23 @@ class TestApiClient(unittest.TestCase):
         self.assertEqual(out.data, b"abc")
 
         # file response type
-        response_file = DummyResponse(status=200, data=b"filedata", headers={"Content-Disposition": 'attachment; filename="x.bin"'})
-        with patch.object(client, "_ApiClient__deserialize_file", return_value="/tmp/x.bin"):
+        response_file = DummyResponse(
+            status=200,
+            data=b"filedata",
+            headers={"Content-Disposition": 'attachment; filename="x.bin"'},
+        )
+        with patch.object(
+            client, "_ApiClient__deserialize_file", return_value="/tmp/x.bin"
+        ):
             out_file = client.response_deserialize(response_file, {"200": "file"})
         self.assertEqual(out_file.data, "/tmp/x.bin")
 
         # typed model via charset decode path
-        response_json = DummyResponse(status=200, data=b'"successful"', headers={"content-type": "application/json; charset=utf-8"})
+        response_json = DummyResponse(
+            status=200,
+            data=b'"successful"',
+            headers={"content-type": "application/json; charset=utf-8"},
+        )
         out_json = client.response_deserialize(response_json, {"200": "StatusCode"})
         self.assertEqual(out_json.data, StatusCode.SUCCESSFUL)
 

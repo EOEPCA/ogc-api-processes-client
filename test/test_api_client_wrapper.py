@@ -113,7 +113,9 @@ class TestApiClientWrapper(unittest.TestCase):
             jobID="job-42",
             status="accepted",
         )
-        fake_api_client.response_deserialize.return_value = SimpleNamespace(data=expected)
+        fake_api_client.response_deserialize.return_value = SimpleNamespace(
+            data=expected
+        )
 
         result = wrapper.execute_simple(
             process_id="proc-1",
@@ -138,7 +140,9 @@ class TestApiClientWrapper(unittest.TestCase):
         fake_api_client.rest_client.request.return_value = response
         fake_api_client.response_deserialize.return_value = SimpleNamespace(data={})
 
-        with self.assertRaisesRegex(ValueError, "Failed to submit job. Status code: 500"):
+        with self.assertRaisesRegex(
+            ValueError, "Failed to submit job. Status code: 500"
+        ):
             wrapper.execute_simple(process_id="proc-2", execute={})
 
         response.read.assert_called_once()
@@ -170,7 +174,9 @@ class TestApiClientWrapper(unittest.TestCase):
         wrapper, fake_api_client, _ = self._build_wrapper()
         response = DummyResponse()
         fake_api_client.call_api.return_value = response
-        fake_api_client.response_deserialize.return_value = SimpleNamespace(data={"k": "v"})
+        fake_api_client.response_deserialize.return_value = SimpleNamespace(
+            data={"k": "v"}
+        )
         wrapper.result_api = Mock()
         wrapper.result_api._get_result_serialize.return_value = (
             "GET",
@@ -192,7 +198,9 @@ class TestApiClientWrapper(unittest.TestCase):
         payload = b'{"result":{"type":"FeatureCollection","features":[]}}'
         response = DummyResponse(data=payload)
         fake_api_client.call_api.return_value = response
-        fake_api_client.response_deserialize.side_effect = RuntimeError("deserialize fail")
+        fake_api_client.response_deserialize.side_effect = RuntimeError(
+            "deserialize fail"
+        )
         wrapper.result_api = Mock()
         wrapper.result_api._get_result_serialize.return_value = (
             "GET",

@@ -7,7 +7,11 @@ import urllib3
 
 from ogc_api_processes_client.configuration import Configuration
 from ogc_api_processes_client.exceptions import ApiException, ApiValueError
-from ogc_api_processes_client.rest import RESTClientObject, RESTResponse, is_socks_proxy_url
+from ogc_api_processes_client.rest import (
+    RESTClientObject,
+    RESTResponse,
+    is_socks_proxy_url,
+)
 
 
 class TestRestHelpers(unittest.TestCase):
@@ -19,7 +23,9 @@ class TestRestHelpers(unittest.TestCase):
         self.assertFalse(is_socks_proxy_url(None))
 
     def test_rest_response_helpers(self):
-        raw = SimpleNamespace(status=201, reason="CREATED", data=b"x", headers={"a": "b"})
+        raw = SimpleNamespace(
+            status=201, reason="CREATED", data=b"x", headers={"a": "b"}
+        )
         resp = RESTResponse(raw)
         self.assertEqual(resp.status, 201)
         self.assertEqual(resp.read(), b"x")
@@ -33,11 +39,18 @@ class TestRESTClientObject(unittest.TestCase):
         return Configuration(host="https://example.test")
 
     def _http_response(self):
-        return SimpleNamespace(status=200, reason="OK", data=b"{}", headers={"content-type": "application/json"})
+        return SimpleNamespace(
+            status=200,
+            reason="OK",
+            data=b"{}",
+            headers={"content-type": "application/json"},
+        )
 
     def test_init_uses_pool_manager_without_proxy(self):
         cfg = self._cfg()
-        with patch("ogc_api_processes_client.rest.urllib3.PoolManager", return_value=Mock()) as pm:
+        with patch(
+            "ogc_api_processes_client.rest.urllib3.PoolManager", return_value=Mock()
+        ) as pm:
             client = RESTClientObject(cfg)
         self.assertIsNotNone(client.pool_manager)
         pm.assert_called_once()
@@ -45,7 +58,9 @@ class TestRESTClientObject(unittest.TestCase):
     def test_init_uses_proxy_and_socks_managers(self):
         cfg = self._cfg()
         cfg.proxy = "http://proxy:8080"
-        with patch("ogc_api_processes_client.rest.urllib3.ProxyManager", return_value=Mock()) as proxy_pm:
+        with patch(
+            "ogc_api_processes_client.rest.urllib3.ProxyManager", return_value=Mock()
+        ) as proxy_pm:
             RESTClientObject(cfg)
         proxy_pm.assert_called_once()
 
@@ -78,7 +93,9 @@ class TestRESTClientObject(unittest.TestCase):
         cfg = self._cfg()
         client = RESTClientObject(cfg)
         with self.assertRaises(ApiValueError):
-            client.request("POST", "https://example.test/x", body={"a": 1}, post_params={"b": 2})
+            client.request(
+                "POST", "https://example.test/x", body={"a": 1}, post_params={"b": 2}
+            )
 
     def test_request_json_urlencoded_and_multipart_paths(self):
         cfg = self._cfg()
@@ -86,7 +103,12 @@ class TestRESTClientObject(unittest.TestCase):
         client.pool_manager = Mock()
         client.pool_manager.request.return_value = self._http_response()
 
-        client.request("POST", "https://example.test/a", headers={"Content-Type": "application/json"}, body={"a": 1})
+        client.request(
+            "POST",
+            "https://example.test/a",
+            headers={"Content-Type": "application/json"},
+            body={"a": 1},
+        )
         _, kwargs_json = client.pool_manager.request.call_args
         self.assertEqual(kwargs_json["body"], '{"a": 1}')
 
@@ -102,7 +124,9 @@ class TestRESTClientObject(unittest.TestCase):
 
         headers = {"Content-Type": "multipart/form-data"}
         post_params = [("a", {"x": 1}), ("b", "2")]
-        client.request("PATCH", "https://example.test/c", headers=headers, post_params=post_params)
+        client.request(
+            "PATCH", "https://example.test/c", headers=headers, post_params=post_params
+        )
         _, kwargs_multi = client.pool_manager.request.call_args
         self.assertTrue(kwargs_multi["encode_multipart"])
         self.assertEqual(kwargs_multi["fields"][0][1], '{"x": 1}')
@@ -113,11 +137,21 @@ class TestRESTClientObject(unittest.TestCase):
         client.pool_manager = Mock()
         client.pool_manager.request.return_value = self._http_response()
 
-        client.request("DELETE", "https://example.test/d", headers={"Content-Type": "application/xml"}, body="<x/>")
+        client.request(
+            "DELETE",
+            "https://example.test/d",
+            headers={"Content-Type": "application/xml"},
+            body="<x/>",
+        )
         _, kwargs_str = client.pool_manager.request.call_args
         self.assertEqual(kwargs_str["body"], "<x/>")
 
-        client.request("OPTIONS", "https://example.test/e", headers={"Content-Type": "text/plain"}, body=True)
+        client.request(
+            "OPTIONS",
+            "https://example.test/e",
+            headers={"Content-Type": "text/plain"},
+            body=True,
+        )
         _, kwargs_bool = client.pool_manager.request.call_args
         self.assertEqual(kwargs_bool["body"], "true")
 
@@ -126,13 +160,20 @@ class TestRESTClientObject(unittest.TestCase):
         client = RESTClientObject(cfg)
         client.pool_manager = Mock()
         with self.assertRaises(ApiException):
-            client.request("POST", "https://example.test/x", headers={"Content-Type": "application/xml"}, body={"a": 1})
+            client.request(
+                "POST",
+                "https://example.test/x",
+                headers={"Content-Type": "application/xml"},
+                body={"a": 1},
+            )
 
     def test_request_maps_ssl_errors(self):
         cfg = self._cfg()
         client = RESTClientObject(cfg)
         client.pool_manager = Mock()
-        client.pool_manager.request.side_effect = urllib3.exceptions.SSLError("ssl failed")
+        client.pool_manager.request.side_effect = urllib3.exceptions.SSLError(
+            "ssl failed"
+        )
         with self.assertRaises(ApiException):
             client.request("GET", "https://example.test/x")
 
