@@ -6,7 +6,7 @@ This guide helps contributors get productive quickly on `ogc-api-processes-clien
 
 Install these tools first:
 
-- Python 3.8+ (3.11+ recommended for local development)
+- Python 3.10+ (3.11+ recommended for local development)
 - [Hatch](https://hatch.pypa.io/latest/)
 - [Task](https://taskfile.dev/) (`task` CLI)
 - Java runtime (required by OpenAPI Generator)
@@ -33,7 +33,7 @@ task test
 - `ogc_api_processes_client/`: generated and patched Python client code
 - `test/`: generated baseline tests
 - `docs/`: MkDocs content and generated API markdown
-- `Taskfile.yaml`: canonical local workflows (`build-safe`, `check`, `lint`, `test`)
+- `Taskfile.yaml`: canonical local workflows (`build-safe`, `check`, `lint`, `test`, `docs-serve`, `docs-build`)
 - `pyproject.toml`: packaging + Hatch environments
 
 ## 4. Daily Developer Workflow
@@ -62,8 +62,9 @@ task build-safe
 
 1. regenerate client code
 2. apply deterministic compatibility fixes
-3. run `check`
-4. run `test`
+3. remove legacy generated files that are not used in this project
+4. run `check`
+5. run `test`
 
 Do not run raw generation commands in isolation unless you know exactly what must be updated.
 
@@ -79,13 +80,14 @@ If you add new hand-maintained files at repo root, update `.openapi-generator-ig
 
 ## 8. Documentation Workflow
 
-Local docs build:
+Local docs workflows:
 
 ```bash
-mkdocs serve
+task docs-serve
+task docs-build
 ```
 
-The docs workflow also regenerates API markdown via `pdocs` in CI.
+The docs workflow also regenerates API markdown via `pdocs` in CI before `mkdocs` deploy.
 
 ## 9. Common Issues
 
