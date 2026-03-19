@@ -51,10 +51,10 @@ jobs:
       run: pip install hatch ruff
 
     - name: Ruff Check
-      run: ruff check ogc_api_processes_client tests
+      run: hatch run dev:check
 
     - name: Ruff Lint
-      run: ruff format ogc_api_processes_client tests
+      run: hatch run dev:lint
 
     - name: Run tests
       run: hatch run test:run
