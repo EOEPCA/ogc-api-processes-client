@@ -591,6 +591,12 @@ components:
           type: integer
           minimum: 0
           maximum: 100
+        inputs:
+          type: object
+          additionalProperties: true
+        properties:
+          type: object
+          additionalProperties: true
         links:
           type: array
           items:

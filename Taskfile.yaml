@@ -66,7 +66,7 @@ tasks:
     cmds:
     - task: openapi_generator
       vars:
-        API_SPEC: ogc-api
+        API_SPEC: ogcapi-processes
         GENERATOR_NAME: python
         TARGET: .
 
