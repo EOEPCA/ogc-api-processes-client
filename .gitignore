@@ -69,3 +69,4 @@ uv.lock
 site
 .ruff-cache
 .hatch-data
+.openapi-generator
